@@ -74,37 +74,7 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
-      .topbanner {
-        position: relative;
-        height: 200px;
-        color: white;
-    }
-    
-    .topbanner::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value for the darkness */
-        z-index: -1;
-    }
-    
-    .topbanner::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url({% static 'images/topbanner.jpg' %});
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        filter: blur(3px); 
-        z-index: -2;
-    }
+      
     
 .login-body{
   background-image: url(/static/images/event1.jpg);

@@ -29,7 +29,8 @@
           {% include 'messages.html' %}
 
           <h2 id="form-title">Login</h2>
-          <form id="login-form">
+          <form id="login-form" action="" method="POST">
+            {% csrf_token %}
             <div class="mb-3">
               <label for="loginUsername" class="form-label">Email</label>
               <input type="email" class="form-control" id="loginUsername" name="email" required>
@@ -42,7 +43,8 @@
             <button type="submit" class="btn btn-primary">Login</button>
           </form>
 
-          <form id="register-form" style="display: none;">
+          <form id="register-form" style="display: none;" action="{% url 'register' %}" method="POST" >
+            {% csrf_token %}
             <h2 id="form-title"></h2>
             <div class="mb-3">
               <label for="registerUsername" class="form-la4bel">Email</label>
@@ -50,7 +52,7 @@
             </div>
             <div class="mb-3">
                 <label for="phone">Phone Number</label>
-                <input class="form-control" type="tel" id="phone" name="phone"  pattern="[0-9]{12}" required>
+                <input class="form-control" type="tel" id="phone" name="phone"  required>
             </div>
             <div class="mb-3">
               <label for="registerPassword" class="form-label">Password</label>

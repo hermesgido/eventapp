@@ -37,7 +37,10 @@ def venue(request):
 
 
 def login_view(request):
+    print("THis page is loaded")
     if request.method == 'POST':
+        print("THis page reduest is post")
+
         email = request.POST['email']
         password = request.POST['password']
         user = authenticate(request, username=email, password=password)
@@ -45,6 +48,9 @@ def login_view(request):
             login(request, user)
             messages.success(request, 'Login successful')
             return redirect('home')
+        else:
+            messages.error(request, 'Invalid credentials')
+            return redirect('login_view')
     return render(request, 'login.html')
 
 def register_view(request):
@@ -69,6 +75,13 @@ def register_view(request):
     
         user = User.objects.create_user(username=email, password=password)
         login(request, user)
+        messages.success(request, "Successfull registered")
         return redirect('home')  
 
     return render(request, 'register.html')
+
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "You have succesfull logged out")
+    return redirect('home')
