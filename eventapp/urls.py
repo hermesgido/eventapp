@@ -10,4 +10,5 @@ AdminSite.index_title = "EventApp"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('event.urls'))
+    
 ,]

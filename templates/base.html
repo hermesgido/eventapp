@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+  {% load static %}
+  <head>
+    <script scr="{% static 'color-modes.js' %}"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta
+      name="author"
+      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+    />
+    <meta name="generator" content="Hugo 0.118.2" />
+    <title>EventApp - Your Booking Event Web App</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+   #
+</div>;
+  {% block content %} 
+  
+
+  
+  {% endblock %}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const djangoMessages = document.getElementById("django-messages");
+        if (djangoMessages) {
+            const messages = djangoMessages.querySelectorAll(".message");
+
+            messages.forEach((message) => {
+                const text = message.getAttribute("data-message");
+                const level = message.getAttribute("data-level");
+
+                switch (level) {
+                    case "success":
+                        toastr.success(text);
+                        break;
+                    case "error":
+                        toastr.error(text);
+                        break;
+                    case "info":
+                        toastr.info(text);
+                        break;
+                    case "warning":
+                        toastr.warning(text);
+                        break;
+                    default:
+                        toastr.info(text);
+                        break;
+                }
+            });
+        }
+    });
+</script>
+
+</html>
