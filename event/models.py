@@ -29,16 +29,13 @@ class Venue(models.Model):
     def __str__(self):
         return self.name
     
-
-
-
-from django.db import models
-
 class EventBooking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     booking_date = models.DateTimeField(auto_now_add=True)
     booking_duration = models.PositiveIntegerField()
+    is_approved = models.BooleanField(default=False)
+
     # Add any other fields specific to event bookings
 
 class VenueBooking(models.Model):
@@ -46,4 +43,5 @@ class VenueBooking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     booking_date = models.DateTimeField(auto_now_add=True)
     booking_duration = models.PositiveIntegerField()
+    is_approved = models.BooleanField(default=False)
     # Add any other fields specific to venue bookings

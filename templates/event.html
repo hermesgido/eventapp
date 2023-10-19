@@ -44,25 +44,8 @@
     <header data-bs-theme="dark">
       <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container">
-          <a href="#" class="navbar-brand d-flex align-items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              aria-hidden="true"
-              class="me-2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
-              />
-              <circle cx="12" cy="13" r="4" />
-            </svg>
+          <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             <strong>EventApp</strong>
           </a>
         </div>
@@ -86,10 +69,16 @@
               />
 
               <div class="p-3 pt-0">
-                <h1>Event Name</h1>
-                <p>Event Name | Event Name <br>
-                Event Name <br> Duration: Event Name <br> Price: Event Name</p>
-                <a href="#" class="btn btn-primary my-2">Book Now</a>
+                <h1>{{ event.name }} </h1>
+                <p><strong> Location: </strong> {{ event.location }} <br>
+                <strong>Capacity: </strong>  {{ event.maximum_people }} People<br><strong> Duration: </strong> {{ event.time|date:"M jS, Y" }}<br> <strong> Price: </strong> {{ event.price }} Tsh</p>
+
+                <u ><strong> Description </u></strong><br>
+                  {{ event.description }}
+                </p>
+             
+                  <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">Book Now</a>
+                  </button>
               </div>
             </div>
           </div>
@@ -98,18 +87,18 @@
         <p class="p-3">Related Events</p>
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for event in events %}
+            {% for eventy in events %}
     
             <div class="col">
               <div class="card shadow-sm">
                 <img src="{% static 'images/event1.jpg' %}" alt="">
                 <div class="card-body">
-                  <p class="card-text">RE-DIRECTION <br>Sept 3rd, | Mbezi Gadern, Dar Es Salaam</p>
+                  <p class="card-text">{{ eventy.name }} <br>{{ eventy.time|date:"M jS, Y" }}, | {{ eventy.location }}</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><a class="text-decoration-none text-white" href="{% url 'event' %}">View</a></button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary"><a class="text-decoration-none" href="{% url 'event' eventy.id %}">View</a></button>
                     </div>
-                    <small class="text-body-secondary">9 mins</small>
+                    <small class="text-body-secondary">Posted: {{ eventy.created_date | timesince }} Ago</small>
                   </div>
                 </div>
               </div>
@@ -135,5 +124,46 @@
     ></script>
     <script src="{% static 'script.js' %}"></script>
   </body>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                {% comment %} <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> {% endcomment %}
+            </div>
+            <div class="modal-body">
+                <p class="text-center">Are you sure you want to book this event?</p>
+            </div>
+
+            <form action="{% url 'book_event' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="event_id" value="{{ event.id }}">
+           
+
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary m-2" type="submit"  <a href="#" class="text-white text-decoration-none my-2">Book Now</a>
+                {% comment %} <button type="button" class="btn btn-danger" id="confirmButton">Confirm</button> {% endcomment %}
+            </div>
+            
+          </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to handle the confirmation
+    $(document).ready(function() {
+        $('#confirmButton').on('click', function() {
+            // Perform your action here, e.g., submit a form, delete a record, etc.
+            // Once the action is completed, you can close the modal.
+            $('#confirmationModal').modal('hide');
+        });
+    });
+</script>
 
   {% endblock content %}

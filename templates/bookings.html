@@ -1,0 +1,166 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<body>
+  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button
+      class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+      id="bd-theme"
+      type="button"
+      aria-expanded="false"
+      data-bs-toggle="dropdown"
+      aria-label="Toggle theme (auto)"
+    >
+      <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+        <use href="#circle-half"></use>
+      </svg>
+      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+    </button>
+    <ul
+      class="dropdown-menu dropdown-menu-end shadow"
+      aria-labelledby="bd-theme-text"
+    >
+      <li>
+        <button
+          type="button"
+          class="dropdown-item d-flex align-items-center"
+          data-bs-theme-value="light"
+          aria-pressed="false"
+        >
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#sun-fill"></use>
+          </svg>
+          Light
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          class="dropdown-item d-flex align-items-center"
+          data-bs-theme-value="dark"
+          aria-pressed="false"
+        >
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#moon-stars-fill"></use>
+          </svg>
+          Dark
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          class="dropdown-item d-flex align-items-center active"
+          data-bs-theme-value="auto"
+          aria-pressed="true"
+        >
+          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <use href="#circle-half"></use>
+          </svg>
+          Auto
+          <svg class="bi ms-auto d-none" width="1em" height="1em">
+            <use href="#check2"></use>
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <header data-bs-theme="dark">
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a
+          href="{% url 'home' %}"
+          class="navbar-brand d-flex align-items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            aria-hidden="true"
+            class="me-2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+            />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          <strong>EventApp</strong>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container mt-5">
+     {% include 'messages.html' %}
+
+      <h5 class="pb-2">My Events Bookings</h5>
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>QR CODE</th>
+                <th class="col-1">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+                {% for book in bookings %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ book.event.name }}</td>
+                    <td>{{ book.event.location }}</td>
+
+                    <td>{{ book.event.price }}</td>
+                    <td><button class="btn btn-success">SCAN</button></td>
+                    <td>
+                      <button class="btn btn-danger">
+                        <a class="text-white text-decoration-none" href=""
+                          >CANCEL</a
+                        >
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+                    
+             
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-body-secondary py-5">
+    <div class="container">
+      <p class="float-end mb-1">
+        <a href="#">Back to top</a>
+      </p>
+      All Rights Reserved
+    </div>
+  </footer>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"
+  ></script>
+  <script src="{% static 'script.js' %}"></script>
+</body>
+
+{% endblock content %}
