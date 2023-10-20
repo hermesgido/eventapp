@@ -128,7 +128,13 @@
                     <td>{{ book.event.location }}</td>
 
                     <td>{{ book.event.price }}</td>
-                    <td><button class="btn btn-success">SCAN</button></td>
+                    
+                    {% if book.is_approved %}
+                    <td><button class="btn btn-success"  type="button"  data-bs-toggle="modal" data-bs-target="#qrModal-{{ book.id }}" >SCAN</button></td>
+                    {% else %}
+                    <td><button class="btn btn-warning">PENDING</button></td>
+                    {% endif %}
+                      
                     <td>
                       <button class="btn btn-danger">
                         <a class="text-white text-decoration-none" href=""
@@ -137,6 +143,26 @@
                       </button>
                     </td>
                   </tr>
+
+                 
+                 
+                 <!-- Modal -->
+                 <div class="modal fade" id="qrModal-{{ book.id }}" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel-{{ event_booking.id }}" aria-hidden="true">
+                   <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                       <div class="modal-header">
+                         <h5 class="modal-title" id="qrModalLabel-{{ book.id }}">QR Code for Booking</h5>
+                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                         </button>
+                       </div>
+                       <div class="modal-body">
+                         <img src="{{ book.qr_code.url }}" alt="QR Code for Booking ID: {{ book.id }}" class="img-fluid">
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                 
                 {% endfor %}
                     
              

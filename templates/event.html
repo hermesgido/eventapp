@@ -77,7 +77,7 @@
                   {{ event.description }}
                 </p>
              
-                  <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">Book Now</a>
+                  <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">GET TICKET</a>
                   </button>
               </div>
             </div>
@@ -136,7 +136,8 @@
                 </button> {% endcomment %}
             </div>
             <div class="modal-body">
-                <p class="text-center">Are you sure you want to book this event?</p>
+                <p class="text-center">Are you sure you want to book this event? <br>
+                Make sure you have paid <strong> {{ event.price }} Tsh </strong>  to pay number <strong>67658</strong> </p>
             </div>
 
             <form action="{% url 'book_event' %}" method="post">

@@ -1,12 +1,37 @@
+from io import BytesIO
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib import messages
 from . models import *
+import qrcode
+
 
 
 # Create your views here.
+
+import qrcode
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+def approve_event_booking(booking_id):
+    event_booking = EventBooking.objects.get(pk=booking_id)
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(f"Booking ID: {event_booking.pk}\nEvent Name: {event_booking.event.name}\nCustomer Name: {event_booking.user.username}\nPrice Paid: {event_booking.event.price}")
+
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    # Convert the image to binary data and save it in the booking
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    event_booking.qr_code = SimpleUploadedFile(f"qr_{event_booking.pk}.png", buffer.getvalue())
+    event_booking.save()
+
 
 
 def home(request):
@@ -122,7 +147,8 @@ def book_event(request):
             messages.error(request, "You have already booked this event")
             return redirect('home')
             
-        EventBooking.objects.create(user=user, event=event, booking_duration=booking_duration)
+        booking = EventBooking.objects.create(user=user, event=event, booking_duration=booking_duration)
+        approve_event_booking(booking.id)
         messages.success(request, "Event booked successfully")
         return redirect('home')
     else:

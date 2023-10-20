@@ -133,8 +133,8 @@
         <p class="lead text-white">
           Youe Efficint site for booking events and so whatenver you want. stay tuned</p>
         <p>
-          <a href="#" class="btn btn-primary my-2">BOOK VENUE</a>
-          <a href="#" class="btn btn-secondary my-2">BOOK EVENT</a>
+          <a href="#venues" class="btn btn-primary my-2">BOOK VENUE</a>
+          <a href="#events" class="btn btn-secondary my-2">BOOK EVENT</a>
         </p>
       </div>
     </div>
@@ -145,7 +145,7 @@
 
       {% include 'messages.html' %}
 
-      <h3 class="pb-2">Recent Events</h3>
+      <h3 id="events" class="pb-2">Recent Events</h3>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for event in events %}
@@ -173,7 +173,7 @@
 
 
       <div class="container">
-        <h3 class="pb-2 pt-2">Recent Venues</h3>
+        <h3  id= "venues" class="pb-2 pt-2">Recent Venues</h3>
   
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for venu in venues %}
