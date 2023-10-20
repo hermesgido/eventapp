@@ -152,7 +152,14 @@
 
         <div class="col">
           <div class="card shadow-sm">
-            <img src="{% static 'images/event1.jpg' %}" alt="">
+            
+            {% if event.photo %}
+            <img src="{{ event.photo.url }}" alt="" height="250px">
+{% else %}
+            <img src="{% static 'images/event1.jpg' %}" height="250px" alt="">
+
+            {% endif %}
+              
             <div class="card-body">
               <p class="card-text">{{ event.name }} <br> {{ event.time|date:"M jS, Y" }}
                 , | {{ event.location }}</p>
