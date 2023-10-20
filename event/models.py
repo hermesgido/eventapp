@@ -14,6 +14,9 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True)
     created_date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Venue(models.Model):
     name = models.CharField(max_length=100)
@@ -37,6 +40,9 @@ class EventBooking(models.Model):
     is_approved = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
 
+    def __str__(self):
+        return self.event.name
+
 
     # Add any other fields specific to event bookings
 
@@ -47,5 +53,8 @@ class VenueBooking(models.Model):
     booking_duration = models.PositiveIntegerField()
     is_approved = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
+
+    def __str__(self):
+        return self.venue.name
 
     # Add any other fields specific to venue bookings
