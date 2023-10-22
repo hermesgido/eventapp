@@ -19,7 +19,6 @@ class Event(models.Model):
     facebook_link = models.CharField(max_length=250, null=True, blank=True)
     instagram_link = models.CharField(max_length=250, null=True, blank=True)
 
-
     def __str__(self):
         return self.name
 
@@ -34,6 +33,11 @@ class Venue(models.Model):
     photo = models.ImageField(upload_to='venue_photos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    contacts = models.CharField(max_length=250, null=True, blank=True)
+    map_link = models.CharField(max_length=250, null=True, blank=True)
+    facebook_link = models.CharField(max_length=250, null=True, blank=True)
+    instagram_link = models.CharField(max_length=250, null=True, blank=True)
+
 
     def __str__(self):
         return self.name

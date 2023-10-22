@@ -72,7 +72,7 @@ def cancel_book_event(request):
 def home(request):
    
 
-    venues = [i for i in range (6)]
+    venues = Venue.objects.all()
     events = Event.objects.all()
     context = {
         'venues': venues,
@@ -93,8 +93,8 @@ def event(request, id):
     return render(request, 'event.html', context)
 
 def venue(request):
-    venues = [i for i in range (3)]
-    events = [i for i in range (3)]
+    venues = Venue.objects.all()
+    events = Event.objects.all()
     context = {
         'venues': venues,
         'events': events

@@ -183,18 +183,24 @@
         <h3  id= "venues" class="pb-2 pt-2">Recent Venues</h3>
   
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for venu in venues %}
+        {% for venue in venues %}
 
         <div class="col">
           <div class="card shadow-sm">
-<img src="{% static 'images/venue1.jpg' %}" alt="">            <div class="card-body">
-              <p class="card-text">MLIMAN CITY VENUE <br>
-            <strong>Capacity: </strong> 120 pple| <strong> Location: </strong> Dar Es Salaam, <strong> Price: </strong> 30000Tsh
+            {% if venue.photo %}
+            <img src="{{ venue.photo.url }}" alt=""> 
+            {% else %}
+            <img src="{% static 'images/venue1.jpg' %}" alt=""> 
+            {% endif %}
+        
+   <div class="card-body">
+              <p class="card-text">{{ venue.name }} <br>
+            <strong>Capacity: </strong> {{ venue.capacity }} people| <strong> Location: </strong> {{ venue.location }} <strong> Price: </strong> {{venue.price_per_hour}}Tsh
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                 </div>
-                <small class="text-body-secondary">9 mins</small>
+                <small class="text-body-secondary">Posted: {{ venue.created_date | timesince }} Ago</small>
               </div>
             </div>
           </div>
