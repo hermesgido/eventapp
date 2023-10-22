@@ -61,18 +61,48 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex">
+              {% if event.photo %}
               <img
-                src="{% static 'images/event1.jpg' %}"
+                src="{{ event.photo.url }}"
                 height="350px"
                 width="50%"
                 alt="{{ event.name }}"
               />
+              {% else %}
+              <img
+              src="{% static 'images/event1.jpg' %}"
+              height="350px"
+              width="50%"
+              alt="{{ event.name }}"
+            />
+              {% endif %}
+              
 
               <div class="p-3 pt-0">
                 <h1>{{ event.name }} </h1>
                 <p><strong> Location: </strong> {{ event.location }} <br>
                 <strong>Capacity: </strong>  {{ event.maximum_people }} People<br><strong> Duration: </strong> {{ event.time|date:"M jS, Y" }}<br> <strong> Price: </strong> {{ event.price }} Tsh</p>
+<p>
+  {% if event.contacts %}
+  <strong>Contacts: </strong>{{ event.contacts }}
+  <br>
+  {% endif %}
+  {% if event.map_link %}
+  <a target="_blank" href="{{ even.map_link }}">View Location</a>
+  <br>
+  {% endif %}
+  {% if event.instagram_link %}
+  <div class="icns d-flex">
+    <a target="_blank" href="{{ event.instagram_link }}">
+      <img width="30" height="30" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="instagram-new--v1"/>
+    </a>
+    <a target="_blank" href="{{ event.facebook_link }}">
+      <img width="30" height="30" src="https://img.icons8.com/color/48/facebook-new.png" alt="facebook-new"/>    </a>
+  </div>
+  {% endif %}
 
+  
+</p>
                 <u ><strong> Description </u></strong><br>
                   {{ event.description }}
                 </p>
@@ -127,44 +157,51 @@
 
 <!-- Confirmation Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-                {% comment %} <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> {% endcomment %}
-            </div>
-            <div class="modal-body">
-                <p class="text-center">Are you sure you want to book this event? <br>
-                Make sure you have paid <strong> {{ event.price }} Tsh </strong>  to pay number <strong>67658</strong> </p>
-            </div>
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          </div>
+          <div class="modal-body">
+              <form action="{% url 'book_event' %}" method="post">
+                  <label for="no_of_seats">Number Of Seats</label>
+                  <input type="number" min="1" class="form-control p-2" name="no_of_seats" value="1" id="no_of_seats">
+                  
+                  <!-- Display the total price based on the number of seats -->
+                  <p class="text-center pt-3">
+                      Are you sure you want to book {{ no_of_seats }} seat(s)?
+                      Make sure you have paid <strong id="total_price">{{ event.price }}</strong> Tsh
+                      to pay number <strong>67658</strong>
+                  </p>
+                  
+                  {% csrf_token %}
+                  <input type="hidden" name="event_id" value="{{ event.id }}">
+          </div>
 
-            <form action="{% url 'book_event' %}" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="event_id" value="{{ event.id }}">
-           
+          <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary m-2" type="submit">
+                Book Now              </button>
+          </div>
+        </form>
 
-            <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary m-2" type="submit"  <a href="#" class="text-white text-decoration-none my-2">Book Now</a>
-                {% comment %} <button type="button" class="btn btn-danger" id="confirmButton">Confirm</button> {% endcomment %}
-            </div>
-            
-          </form>
-        </div>
-    </div>
+      </div>
+  </div>
 </div>
 
 <script>
-    // JavaScript to handle the confirmation
-    $(document).ready(function() {
-        $('#confirmButton').on('click', function() {
-            // Perform your action here, e.g., submit a form, delete a record, etc.
-            // Once the action is completed, you can close the modal.
-            $('#confirmationModal').modal('hide');
-        });
-    });
+  // Get necessary elements by their IDs
+  const noOfSeatsInput = document.getElementById('no_of_seats');
+  const totalPriceElement = document.getElementById('total_price');
+  
+  // Update the total price whenever the number of seats input changes
+  noOfSeatsInput.addEventListener('input', function () {
+      const eventPrice = {{ event.price }}; // Replace with the actual price
+      const selectedSeats = parseInt(noOfSeatsInput.value);
+      const totalPrice = eventPrice * selectedSeats;
+      totalPriceElement.textContent = totalPrice;
+  });
 </script>
+
 
   {% endblock content %}

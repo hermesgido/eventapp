@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Booking Confirmation</title>
+</head>
+<body>
+    <h1>Event Booking Confirmation</h1>
+    <p>Thank you for booking an event with us. Here are your booking details:</p>
+
+    <p><strong>Event Name:</strong> {{ booking.book.event.name }}</p>
+    <p><strong>Location:</strong> {{ booking.event.location }}</p>
+    <p><strong>Date and Time:</strong> {{ booking.event.time }}</p>
+    <p><strong>Price:</strong> {{ booking.event.price }} Tsh</p>
+    <p><strong>Hosts:</strong> {{ booking.event.hosts }}</p>
+    <p><strong>Description:</strong> {{ booking.event.description }}</p>
+
+    <p>Payment details:</p>
+    <p>Make sure you have paid {{ booking.event.price }} Tsh to pay number 67658.</p>
+
+    {% comment %} <p>Here is your booking QR code:</p>
+    {% comment %} <p>{{ booking.qr_code.url }}</p> {% endcomment %}
+    {% comment %} <img src="{{ booking.qr_code.url }}" alt="QR Code for your booking"> {% endcomment %} 
+
+    <p>If you have any questions or need further assistance, please don't hesitate to contact us at {{ event.contacts }}.</p>
+
+    <p>Thank you for choosing to attend our event!</p>
+</body>
+</html>

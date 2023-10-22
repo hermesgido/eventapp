@@ -8,11 +8,17 @@ class Event(models.Model):
     location = models.CharField(max_length=200, null=True, blank=True)
     price = models.CharField(max_length=200, null=True, blank=True)
     time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
     maximum_people = models.IntegerField()
     hosts = models.CharField(max_length=200, null=True, blank=True)
     photo = models.ImageField(upload_to='event_photos/', blank=True, null=True)
     description = models.TextField(null=True, blank=True)
     created_date = models.DateTimeField(auto_now=True)
+    contacts = models.CharField(max_length=250, null=True, blank=True)
+    map_link = models.CharField(max_length=250, null=True, blank=True)
+    facebook_link = models.CharField(max_length=250, null=True, blank=True)
+    instagram_link = models.CharField(max_length=250, null=True, blank=True)
+
 
     def __str__(self):
         return self.name
@@ -39,6 +45,8 @@ class EventBooking(models.Model):
     booking_duration = models.PositiveIntegerField()
     is_approved = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
+    is_canceled = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.event.name

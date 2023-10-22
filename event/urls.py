@@ -13,6 +13,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('bookings/', views.bookings, name="bookings"),
     path('book_event', views.book_event, name='book_event'),
+    path('cancel_book_event', views.cancel_book_event, name='cancel_book_event'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
