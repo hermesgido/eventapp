@@ -74,7 +74,9 @@ def approve_venue_booking(booking_id):
     buffer = BytesIO()
     img.save(buffer, format="PNG")
     venue_booking.qr_code = SimpleUploadedFile(f"qr_{venue_booking.pk}.png", buffer.getvalue())
-    venue_booking.venue.available = True
+    vn = venue_booking.venue
+    vn.available=False
+    vn.save()
     venue_booking.save()
 
 def cancel_book_event(request):
@@ -82,6 +84,7 @@ def cancel_book_event(request):
         booking_id = request.POST.get('booking_id')
         book = EventBooking.objects.get(id=booking_id)
         book.is_canceled = True
+
         book.save()
         messages.success(request, "Booking Canceled Succesfull")
         return redirect(bookings)
@@ -91,7 +94,10 @@ def cancel_book_venue(request):
         booking_id = request.POST.get('booking_id')
         book = VenueBooking.objects.get(id=booking_id)
         book.is_canceled = True
-        book.venue.available = True
+
+        vn = book.venue
+        vn.available=True
+        vn.save()        
         book.save()
         messages.success(request, "Booking Canceled Succesfull")
         return redirect(bookings_venue)
@@ -103,6 +109,12 @@ def home(request):
 
     venues = Venue.objects.all()
     events = Event.objects.all()
+    # for ev in events:
+    #     ev.user=request.user
+    #     ev.save()
+    # for v in venues:
+    #     v.user = request.user
+    #     v.save()
     context = {
         'venues': venues,
         'events': events
