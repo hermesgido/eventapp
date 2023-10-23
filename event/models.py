@@ -64,6 +64,7 @@ class VenueBooking(models.Model):
     booking_date = models.DateTimeField(auto_now_add=True)
     booking_duration = models.PositiveIntegerField()
     is_approved = models.BooleanField(default=False)
+    is_canceled = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes/', null=True, blank=True)
 
     def __str__(self):

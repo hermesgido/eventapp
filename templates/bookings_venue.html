@@ -132,10 +132,10 @@
                 {% for book in bookings %}
                 <tr>
                     <th scope="row">1</th>
-                    <td>{{ book.event.name }}</td>
-                    <td>{{ book.event.location }}</td>
+                    <td>{{ book.venue.name }}</td>
+                    <td>{{ book.venue.location }}</td>
 
-                    <td>{{ book.event.price }}</td>
+                    <td>{{ book.venue.price_per_hour }}Tsh</td>
                     
                     {% if book.is_approved %}
                     <td><button class="btn btn-success"  type="button"  data-bs-toggle="modal" data-bs-target="#qrModal-{{ book.id }}" >SCAN</button></td>
@@ -187,7 +187,7 @@
 
                           </div>
                           <div class="bb px-2">
-                            <form action="{% url 'cancel_book_event' %}" method="post">
+                            <form action="{% url 'cancel_book_venue' %}" method="post">
                               {% csrf_token %}
                               <input type="hidden" name="booking_id" value="{{ book.id }}">
                               <button type="submit" name="cancelbook" class="btn btn-danger">CANCEL</button>

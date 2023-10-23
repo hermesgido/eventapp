@@ -58,6 +58,25 @@ def approve_event_booking(booking_id):
     event_booking.qr_code = SimpleUploadedFile(f"qr_{event_booking.pk}.png", buffer.getvalue())
     event_booking.save()
 
+def approve_venue_booking(booking_id):
+    venue_booking = VenueBooking.objects.get(pk=booking_id)
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(f"Booking ID: {venue_booking.id}\nVenue Name: {venue_booking.venue.name}\nCustomer Name: {venue_booking.user.username}\nPrice Paid: {venue_booking.venue.price_per_hour}")
+
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    # Convert the image to binary data and save it in the booking
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    venue_booking.qr_code = SimpleUploadedFile(f"qr_{venue_booking.pk}.png", buffer.getvalue())
+    venue_booking.venue.available = True
+    venue_booking.save()
+
 def cancel_book_event(request):
     if request.method == "POST":
         booking_id = request.POST.get('booking_id')
@@ -66,6 +85,16 @@ def cancel_book_event(request):
         book.save()
         messages.success(request, "Booking Canceled Succesfull")
         return redirect(bookings)
+
+def cancel_book_venue(request):
+    if request.method == "POST":
+        booking_id = request.POST.get('booking_id')
+        book = VenueBooking.objects.get(id=booking_id)
+        book.is_canceled = True
+        book.venue.available = True
+        book.save()
+        messages.success(request, "Booking Canceled Succesfull")
+        return redirect(bookings_venue)
 
 
 
@@ -92,12 +121,12 @@ def event(request, id):
     }
     return render(request, 'event.html', context)
 
-def venue(request):
-    venues = Venue.objects.all()
-    events = Event.objects.all()
+def venue(request, id):
+    venue = Venue.objects.get(id=id)
+    venues =  Venue.objects.all()[:3]
     context = {
+        'venue':venue,
         'venues': venues,
-        'events': events
     }
     return render(request, 'venue.html', context)
 
@@ -163,6 +192,17 @@ def bookings(request):
 
     return render(request, 'bookings.html', context)
 
+def bookings_venue(request):
+    if not request.user.is_authenticated:
+        messages.info(request, "Please Login to proceed")
+        return redirect(login_view)
+    bookings = VenueBooking.objects.filter(user=request.user)
+    context = {
+        'bookings': bookings
+    }
+
+    return render(request, 'bookings_venue.html', context)
+
 
 def book_event(request):
     if not request.user.is_authenticated:
@@ -203,3 +243,43 @@ def book_event(request):
         return redirect('home')
     
 
+
+def book_venue(request):
+    if not request.user.is_authenticated:
+        print(request.POST.get('venue_id'))
+        messages.info(request, "Please Login to proceed")
+        return redirect(login_view)
+    if request.method == "POST":
+        user = request.user
+        venue_id = request.POST.get('venue_id')
+        venue = Venue.objects.get(id=venue_id)
+        booking_duration = 0
+        max_people = venue.capacity
+        # if EventBooking.objects.filter(event=event).count() > max_people:
+        #     messages.error(request, "Event is full")
+        #     return redirect('home')
+        if venue.available == False:
+            messages.error(request, "Venue is already booked")
+            return redirect('home')
+        # if VenueBooking.objects.filter(venue=venue, user=user).exists():
+        #     messages.error(request, "You have already booked this venue")
+        #     return redirect('home')
+        
+    
+        booking = VenueBooking.objects.create(user=user, venue=venue, booking_duration=booking_duration)
+        approve_venue_booking(booking.id)
+        context = {
+        'event': event,  # Pass the event and booking details
+        'booking': VenueBooking.objects.get(id=booking.id),
+            }
+        try:
+            send_email_send('Venue Booking Confirmation', 'mariojaxn1@gmail.com', context)
+        except:
+            messages.info("Error in sending email")
+
+        messages.success(request, "Venue booked successfully")
+        return redirect('home')
+    else:
+        messages.error(request, "Something went wrong")
+        return redirect('home')
+    

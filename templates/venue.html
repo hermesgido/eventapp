@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+        
+  <body>
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+                id="bd-theme"
+                type="button"
+                aria-expanded="false"
+                data-bs-toggle="dropdown"
+                aria-label="Toggle theme (auto)">
+          <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
+          <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+              <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+              Light
+              <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+              <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+              Dark
+              <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+              <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#circle-half"></use></svg>
+              Auto
+              <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    <header data-bs-theme="dark">
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <strong>EventApp</strong>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Single Event Content -->
+      <div class="container mt-5">
+        {% comment %} {% if event %} {% endcomment %}
+        {% include 'messages.html' %}
+
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex">
+              {% if venue.photo %}
+              <img
+                src="{{ venue.photo.url }}"
+                height="350px"
+                width="50%"
+                alt="{{ venue.name }}"
+              />
+              {% else %}
+              <img
+              src="{% static 'images/event1.jpg' %}"
+              height="350px"
+              width="50%"
+              alt="{{ venue.name }}"
+            />
+              {% endif %}
+              
+
+              <div class="p-3 pt-0">
+                <h1>{{ venue.name }} </h1>
+                <p><strong> Location: </strong> {{ venue.location }} <br>
+                <strong>Maximum People: </strong>  {{ venue.capacity }} People<br><strong><strong> Price: </strong> {{ venue.price_per_hour }} Tsh</p>
+<p>
+  {% if venue.contacts %}
+  <strong>Contacts: </strong>{{ venue.contacts }}
+  <br>
+  {% endif %}
+  {% if venue.map_link %}
+  <a target="_blank" href="{{ even.map_link }}">View Location</a>
+  <br>
+  {% endif %}
+  {% if venue.instagram_link %}
+  <div class="icns d-flex">
+    <a target="_blank" href="{{ venue.instagram_link }}">
+      <img width="30" height="30" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="instagram-new--v1"/>
+    </a>
+    <a target="_blank" href="{{ venue.facebook_link }}">
+      <img width="30" height="30" src="https://img.icons8.com/color/48/facebook-new.png" alt="facebook-new"/>    </a>
+  </div>
+  {% endif %}
+
+  
+</p>
+                <u ><strong> Description </u></strong><br>
+                  {{ venue.description }}
+                </p>
+             
+                  <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">BOOK NOW</a>
+                  </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="p-3">Related Venues</p>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for venue in venues %}
+    
+            <div class="col">
+              <div class="card shadow-sm">
+                <img src="{% static 'images/event1.jpg' %}" alt="">
+                <div class="card-body">
+                  <p class="card-text">{{ venue.name }} <br>{{ venue.time|date:"M jS, Y" }}, | {{ eventy.location }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary"><a class="text-decoration-none" href="{% url 'venue' venue.id %}">View</a></button>
+                    </div>
+                    <small class="text-body-secondary">Posted: {{ venue.created_date | timesince }} Ago</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+      </div>
+    </main>
+
+    <footer class="text-body-secondary py-5">
+      <div class="container">
+        <p class="float-end mb-1">
+          <a href="#">Back to top</a>
+        </p>
+        All Rights Reserved
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'script.js' %}"></script>
+  </body>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          </div>
+          <div class="modal-body">
+              <form action="{% url 'book_venue' %}" method="post">
+                
+                  <!-- Display the total price based on the number of seats -->
+                  <p class="text-center pt-3">
+                      Are you sure you want to book this venue?
+                      Make sure you have paid <strong id="total_price">{{ venue.price }}</strong> Tsh
+                      to pay number <strong>67658</strong>
+                  </p>
+                  
+                  {% csrf_token %}
+                  <input type="hidden" name="venue_id" value="{{ venue.id }}">
+          </div>
+
+          <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary m-2" type="submit">
+                Book Now              </button>
+          </div>
+        </form>
+
+      </div>
+  </div>
+</div>
+
+<script>
+  // Get necessary elements by their IDs
+  const noOfSeatsInput = document.getElementById('no_of_seats');
+  const totalPriceElement = document.getElementById('total_price');
+  
+  // Update the total price whenever the number of seats input changes
+  noOfSeatsInput.addEventListener('input', function () {
+      const eventPrice = {{ venue.price }}; // Replace with the actual price
+      const selectedSeats = parseInt(noOfSeatsInput.value);
+      const totalPrice = eventPrice * selectedSeats;
+      totalPriceElement.textContent = totalPrice;
+  });
+</script>
+
+
+  {% endblock content %}
