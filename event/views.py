@@ -23,7 +23,7 @@ def send_email_send(subject, to_email, context):
     email_content = render_to_string('email_template.html', context)
 
     message = Mail(
-        from_email='jacksonkabanza1@gmail.com',
+        from_email='hermessgido@gmail.com',
         to_emails=to_email,
         subject=subject,
         html_content=email_content
@@ -244,7 +244,7 @@ def book_event(request):
             'booking': EventBooking.objects.get(id=booking.id),
              }
             try:
-               send_email_send('Event Booking Confirmation', 'mariojaxn1@gmail.com', context)
+               send_email_send('Event Booking Confirmation', 'jacksonkabanza1@gmail.com', context)
             except:
                 messages.info("Error in sending email")
 
@@ -285,7 +285,7 @@ def book_venue(request):
         'booking': VenueBooking.objects.get(id=booking.id),
             }
         try:
-            send_email_send('Venue Booking Confirmation', 'mariojaxn1@gmail.com', context)
+            send_email_send('Venue Booking Confirmation', 'jacksonkabanza1@gmail.com', context)
         except:
             messages.info("Error in sending email")
 

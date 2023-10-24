@@ -169,7 +169,13 @@
                   <p class="text-center pt-3">
                       Are you sure you want to book this venue?
                       Make sure you have paid <strong id="total_price">{{ venue.price }}</strong> Tsh
-                      to pay number <strong>67658</strong>
+                      to pay number <strong>
+                        {% if venue.pay_number %}
+                        {{ venue.pay_number }}
+                        {% else %}
+                        67658
+                        {% endif %}
+                      </strong>
                   </p>
                   
                   {% csrf_token %}

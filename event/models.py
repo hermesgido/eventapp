@@ -19,6 +19,7 @@ class Event(models.Model):
     map_link = models.CharField(max_length=250, null=True, blank=True)
     facebook_link = models.CharField(max_length=250, null=True, blank=True)
     instagram_link = models.CharField(max_length=250, null=True, blank=True)
+    pay_number = models.CharField(max_length=250, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -39,6 +40,8 @@ class Venue(models.Model):
     map_link = models.CharField(max_length=250, null=True, blank=True)
     facebook_link = models.CharField(max_length=250, null=True, blank=True)
     instagram_link = models.CharField(max_length=250, null=True, blank=True)
+    pay_number = models.CharField(max_length=250, null=True, blank=True)
+
 
 
     def __str__(self):

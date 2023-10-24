@@ -171,7 +171,13 @@
                   <p class="text-center pt-3">
                       Are you sure you want to book {{ no_of_seats }} seat(s)?
                       Make sure you have paid <strong id="total_price">{{ event.price }}</strong> Tsh
-                      to pay number <strong>67658</strong>
+                      to pay number <strong>
+                        {% if event.pay_number %}
+                        {{ event.pay_number }}
+                        {% else %}
+                        67658
+                        {% endif %}
+                      </strong>
                   </p>
                   
                   {% csrf_token %}
