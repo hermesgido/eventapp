@@ -121,14 +121,19 @@
     
             <div class="col">
               <div class="card shadow-sm">
-                <img src="{% static 'images/event1.jpg' %}" alt="">
+
+                {% if venue.photo %}
+                <img src="{{ venue.photo.url }}" alt="" height="200">
+                {% else %}
+                <img src="{% static 'images/event1.jpg' %}" alt=""  height="200">
+                {% endif %}
                 <div class="card-body">
-                  <p class="card-text">{{ venue.name }} <br>{{ venue.time|date:"M jS, Y" }}, | {{ eventy.location }}</p>
+                  <p class="card-text">{{ venue.name }} <br> <strong>Capacity:</strong> {{ venue.capacity }} | <strong>Location:</strong>  {{ venue.location }}</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <button type="button" class="btn btn-sm btn-outline-secondary"><a class="text-decoration-none" href="{% url 'venue' venue.id %}">View</a></button>
                     </div>
-                    <small class="text-body-secondary">Posted: {{ venue.created_date | timesince }} Ago</small>
+                    <small class="text-body-secondary">Posted: {{ venue.created_at | timesince }} Ago</small>
                   </div>
                 </div>
               </div>
