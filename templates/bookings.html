@@ -142,8 +142,14 @@
                     <td>{{ book.event.price }}</td>
                     
                     {% if book.is_approved %}
-                    <td><button class="btn btn-success"  type="button"  data-bs-toggle="modal" data-bs-target="#qrModal-{{ book.id }}" >SCAN</button></td>
+
+
+                    {% if book.is_canceled %}
+                    <td><button class="btn btn-danger"  >CANCELLED</button></td>
                     {% else %}
+                    <td><button class="btn btn-success"  type="button"  data-bs-toggle="modal" data-bs-target="#qrModal-{{ book.id }}" >SCAN</button></td>
+                    {% endif %}
+                                      {% else %}
                     <td><button class="btn btn-warning">PENDING</button></td>
                     {% endif %}
                       
