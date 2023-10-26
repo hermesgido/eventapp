@@ -82,6 +82,9 @@
                 <h1>{{ event.name }} </h1>
                 <p><strong> Location: </strong> {{ event.location }} <br>
                 <strong>Capacity: </strong>  {{ event.maximum_people }} People<br><strong> Duration: </strong> {{ event.time|date:"M jS, Y" }}<br> <strong> Price: </strong> {{ event.price }} Tsh</p>
+                {% if event.event_type %}
+                      <strong>Event Type: </strong>{{event.event_type}}
+                     {% endif %}
 <p>
   {% if event.contacts %}
   <strong>Contacts: </strong>{{ event.contacts }}
@@ -123,7 +126,9 @@
               <div class="card shadow-sm">
                 <img src="{% static 'images/event1.jpg' %}" alt="">
                 <div class="card-body">
-                  <p class="card-text">{{ eventy.name }} <br>{{ eventy.time|date:"M jS, Y" }}, | {{ eventy.location }}</p>
+                  <p class="card-text">{{ eventy.name }} <br>{{ eventy.time|date:"M jS, Y" }}, | {{ eventy.location }}
+
+                    </p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <button type="button" class="btn btn-sm btn-outline-secondary"><a class="text-decoration-none" href="{% url 'event' eventy.id %}">View</a></button>

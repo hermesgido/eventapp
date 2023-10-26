@@ -120,7 +120,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Name</th>                
+                <th>User</th>
                 <th>Location</th>
                 <th>Price</th>
                 <th>QR CODE</th>
@@ -133,6 +134,8 @@
                 <tr>
                     <th scope="row">1</th>
                     <td>{{ book.venue.name }}</td>
+                    <td>{{ book.user.first_name }}</td>
+
                     <td>{{ book.venue.location }}</td>
 
                     <td>{{ book.venue.price_per_hour }}Tsh</td>

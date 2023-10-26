@@ -1,8 +1,10 @@
+from django.utils import timezone
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import User, Group, Permission
 from .models import Event, EventBooking, Venue, VenueBooking
 from django import forms
+from django.contrib import messages
 
 # ... Your model definitions go here ...
 
@@ -130,6 +132,9 @@ class VenueAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
+  
+
+
 
 from django.utils.html import format_html
 
@@ -142,9 +147,17 @@ class EventAdmin(admin.ModelAdmin):
 
 
     def save_model(self, request, obj, form, change):
-            if not change:  # Only set the user field when creating a new venue
-                obj.user = request.user
-            super().save_model(request, obj, form, change)
+        if not change: 
+            obj.user = request.user
+
+        if obj.time and obj.time < timezone.now():
+            self.message_user(request, "The event time has already passed. Please choose a future time.", level=messages.ERROR)
+            return
+        if obj.end_time and obj.end_time < timezone.now():
+            self.message_user(request, "The event time has already passed. Please choose a future time.", level=messages.ERROR)
+            return
+
+        super().save_model(request, obj, form, change)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

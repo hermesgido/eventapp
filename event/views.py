@@ -180,7 +180,7 @@ def register_view(request):
             messages.error(request, 'User already exists')
             return redirect('register')
     
-        user = User.objects.create_user(username=email, password=password)
+        user = User.objects.create_user(username=email, password=password, email=email, first_name=phone)
         login(request, user)
         messages.success(request, "Successfull registered")
         return redirect('home')  

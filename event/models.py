@@ -7,6 +7,17 @@ class Event(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     location = models.CharField(max_length=200, null=True, blank=True)
+    typ = (
+        ("BIRTHDAY", "BIRTHDAY"),
+        ("WEDDING", "WEDDING"),
+        ("ANNIVERSARY", "ANNIVERSARY"),
+        ("GRADUATION", "GRADUATION"),
+        ("SMALL PART", "SMALL PART"),
+        ("ADVENTURE", "ADVENTURE"),
+
+        # Add more event types as needed
+    )
+    event_type = models.CharField(max_length=200, choices=typ, null=True, blank=True)
     price = models.CharField(max_length=200, null=True, blank=True)
     time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
